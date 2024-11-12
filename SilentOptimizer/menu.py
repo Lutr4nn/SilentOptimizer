@@ -3,16 +3,28 @@ from rich.table import Table
 from rich.box import ROUNDED
 
 def terminal_menu():
-    all_lines = [f"Option {i}" for i in range(1, 11)]
+    lines = [
+        "Option 1",
+        "Option 2",
+        "Option 3",
+        "Option 4",
+        "Option 5",
+        "Option 6",
+        "Option 7",
+        "Option 8",
+        "Option 9",
+        "Option 10"
+    ]
 
     table = Table(title="SilentOptimizer", title_style="bold green", box=ROUNDED)
 
     table.add_column("Number", justify="center", style="cyan", no_wrap=True, width=12)
-    table.add_column("Description", justify="left", style="magenta", width=12)
+    table.add_column("Tool", justify="left", style="magenta", width=12)
     
-    for i, line in enumerate(all_lines, start=1):
+    for i, line in enumerate(lines, start=1):
         table.add_row(
-            f"[{i}]", line,
+            f"[{i}]",
+            line,
         )
 
     console = Console()
