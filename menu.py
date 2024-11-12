@@ -2,7 +2,7 @@ from rich.console import Console
 from rich.table import Table
 from rich.box import ROUNDED
 
-def menu():
+def terminal_menu():
     all_lines = [f"Option {i}" for i in range(1, 11)]
 
     table = Table(title="SilentOptimizer", title_style="bold green", box=ROUNDED)

@@ -1,7 +1,7 @@
-from menu import *
+from menu import terminal_menu
 
 def main():
-    menu()
+    terminal_menu()
 
 if __name__ == "__main__":
     main()
