@@ -1,10 +1,12 @@
 from rich.console import Console
 from rich.table import Table
 from rich.box import ROUNDED
+from tools import Tools
+
 
 def terminal_menu():
     lines = [
-        "Option 1",
+        "CPU Bouncer",
         "Option 2",
         "Option 3",
         "Option 4",
@@ -22,10 +24,37 @@ def terminal_menu():
     table.add_column("Tool", justify="left", style="magenta", width=12)
     
     for i, line in enumerate(lines, start=1):
-        table.add_row(
-            f"[{i}]",
-            line,
-        )
+        table.add_row(f"[{i}]", line)
 
     console = Console()
     console.print(table)
+    
+    try:
+        choice = int(input("Choose a tool number: "))
+        if 1 <= choice <= 10:
+            if choice == 1:
+                Tools.cpu_bouncer()
+            elif choice == 2:
+                Tools.option_2()
+            elif choice == 3:
+                Tools.option_3()
+            elif choice == 4:
+                Tools.option_4()
+            elif choice == 5:
+                Tools.option_5()
+            elif choice == 6:
+                Tools.option_6()
+            elif choice == 7:
+                Tools.option_7()
+            elif choice == 8:
+                Tools.option_8()
+            elif choice == 9:
+                Tools.option_9()
+            elif choice == 10:
+                Tools.option_10()
+            else:
+                print(f"Option {choice} is running.")
+        else:
+            print("Invalid choice. You must choose a number between 1 and 10.")
+    except ValueError:
+        print("Only numbers are allowed.")
