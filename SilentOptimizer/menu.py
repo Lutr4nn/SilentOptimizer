@@ -7,8 +7,8 @@ from tools import *
 def terminal_menu():
     lines = [
         "CPU Bouncer",
-        "Option 2",
-        "Option 3",
+        "Disk Space",
+        "Disk Cleaner",
         "Option 4",
         "Option 5",
         "Option 6",
@@ -35,9 +35,10 @@ def terminal_menu():
             if choice == 1:
                 tool.cpu_bouncer()
             elif choice == 2:
-                Tools.option_2()
+                tool.disk_space()
+                print('If you want to clean the disk, you can use the Disk Clenaer tool.')
             elif choice == 3:
-                Tools.option_3()
+                tool.disk_cleaner()
             elif choice == 4:
                 Tools.option_4()
             elif choice == 5:

@@ -1,2 +1,4 @@
 rich==13.5.2
 psutil==5.9.0
+os (standard library)
+time (standard library)
