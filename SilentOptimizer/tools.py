@@ -10,11 +10,11 @@ class Tools:
         
         for process in psutil.process_iter(attrs=['pid', 'name', 'memory_percent']):
             try:
-                if process.info['memory_percent'] > 2.5: # Valeur à changer mais pour test / trouver quels process il faut kill et quels process il ne faut pas kill
+                if process.info['memory_percent'] > 0.5: # Valeur à changer mais pour test / trouver quels process il faut kill et quels process il ne faut pas kill
                     process.kill()
             except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
                 pass
 
 
-tools = Tools()
-tools.cpu_bouncer()
+tool = Tools()
+

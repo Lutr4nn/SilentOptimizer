@@ -1,7 +1,7 @@
 from rich.console import Console
 from rich.table import Table
 from rich.box import ROUNDED
-from tools import Tools
+from tools import *
 
 
 def terminal_menu():
@@ -33,7 +33,7 @@ def terminal_menu():
         choice = int(input("Choose a tool number: "))
         if 1 <= choice <= 10:
             if choice == 1:
-                Tools.cpu_bouncer()
+                tool.cpu_bouncer()
             elif choice == 2:
                 Tools.option_2()
             elif choice == 3:
