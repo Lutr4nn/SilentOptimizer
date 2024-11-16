@@ -12,7 +12,7 @@ def terminal_menu():
         "Disable Telemetry",
         "Blackbird",
         "Privacy.sexy",
-        "Option 8",
+        "Disable OneDrive",
         "Option 9",
         "Option 10"
     ]
@@ -41,11 +41,11 @@ def terminal_menu():
             elif choice == 5:
                 Tools.telemetry()
             elif choice == 6:
-                Tools.option_6()
+                Tools.blackbird()
             elif choice == 7:
                 Tools.privacysexy()
             elif choice == 8:
-                Tools.option_8()
+                Tools.disable_onedrive()
             elif choice == 9:
                 Tools.option_9()
             elif choice == 10:

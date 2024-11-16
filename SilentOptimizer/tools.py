@@ -8,6 +8,12 @@ def is_64bit():
             os._exit(0)
         return os_arch
     
+def subprocess_handler(cmd):
+	p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
+	output = p.communicate()
+	
+	return [p.returncode, output]
+
 def set_registry(keys):
     mask = winreg.KEY_WOW64_64KEY | winreg.KEY_ALL_ACCESS if is_64bit() else winreg.KEY_ALL_ACCESS
 
@@ -84,17 +90,55 @@ class Tools:
             print(f"Error setting power plan to Ultimate Performance: {e}")
 
                 
-    def telemetry(undo):
-        value = int(undo)
+    def telemetry():
+        value = 0
         telemetry_keys = {'AllowTelemetry': [winreg.HKEY_LOCAL_MACHINE,
                                          r'SOFTWARE\Policies\Microsoft\Windows\DataCollection',
                                          "AllowTelemetry", winreg.REG_DWORD, value]}
         set_registry(telemetry_keys)
         
+    def blackbird():
+        url = "https://www.getblackbird.net/"
+        webbrowser.open(url)
     def privacysexy():
         url = "https://privacy.sexy/"
         webbrowser.open(url)
     
+    def onedrive():
+        file_sync_value = 0
+        list_pin_value = int(not 0)
+        action = "install" if 0 else "uninstall"
+        if is_64bit():
+            onedrive_keys = {'FileSync': [winreg.HKEY_LOCAL_MACHINE,
+									  r'SOFTWARE\Policies\Microsoft\Windows\OneDrive',
+									  'DisableFileSyncNGSC', winreg.REG_DWORD, file_sync_value],
+
+						 'ListPin': [winreg.HKEY_CLASSES_ROOT,
+									 r'CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}',
+									 'System.IsPinnedToNameSpaceTree', winreg.REG_DWORD, list_pin_value],
+
+						 'ListPin64Bit': [winreg.HKEY_CLASSES_ROOT,
+									 r'Wow6432Node\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}',
+									 'System.IsPinnedToNameSpaceTree', winreg.REG_DWORD, list_pin_value]}
+        else:	
+            onedrive_keys = {'FileSync': [winreg.HKEY_LOCAL_MACHINE,
+									  r'SOFTWARE\Policies\Microsoft\Windows\OneDrive',
+									  'DisableFileSyncNGSC', winreg.REG_DWORD, file_sync_value],
+
+						 'ListPin': [winreg.HKEY_CLASSES_ROOT,
+									 r'CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}',
+									 'System.IsPinnedToNameSpaceTree', winreg.REG_DWORD, list_pin_value]}
+        set_registry(onedrive_keys)
+        system = "SysWOW64" if is_64bit() else "System32"
+        onedrive_setup = os.path.join(os.environ['SYSTEMROOT'], "{system}\\OneDriveSetup.exe".format(system=system))
+        cmd = "{bin} /{action}".format(bin=onedrive_setup, action=action)
+        output = subprocess_handler(cmd)
+        if output[0] == -2147219823:
+            print("OneDrive: successfully {action}ed".format(action=action))
+        else:
+            print("OneDrive: unable to {action}. Exited with code: {code} - {message}".format(action=action, code=output[0], message=output[1]))
+
+
 tool = Tools()
 
 
