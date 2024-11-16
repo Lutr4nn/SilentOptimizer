@@ -3,29 +3,26 @@ from rich.table import Table
 from rich.box import ROUNDED
 from tools import *
 
-
 def terminal_menu():
     lines = [
         "CPU Bouncer",
         "Disk Space",
-        "Disk Cleaner",
-        "Option 4",
-        "Option 5",
-        "Option 6",
-        "Option 7",
+        "Clean Local Temp",
+        "Ultimate Power",
+        "Disable Telemetry",
+        "Blackbird",
+        "Privacy.sexy",
         "Option 8",
         "Option 9",
         "Option 10"
     ]
 
     table = Table(title="SilentOptimizer", title_style="bold green", box=ROUNDED)
-
-    table.add_column("Number", justify="center", style="cyan", no_wrap=True, width=12)
-    table.add_column("Tool", justify="left", style="magenta", width=12)
+    table.add_column("Number", justify="center", style="cyan", no_wrap=True, width=18)
+    table.add_column("Tool", justify="left", style="magenta", width=18)
     
     for i, line in enumerate(lines, start=1):
         table.add_row(f"[{i}]", line)
-
     console = Console()
     console.print(table)
     
@@ -40,13 +37,13 @@ def terminal_menu():
             elif choice == 3:
                 tool.disk_cleaner()
             elif choice == 4:
-                Tools.option_4()
+                Tools.ultimate_power()
             elif choice == 5:
-                Tools.option_5()
+                Tools.telemetry()
             elif choice == 6:
                 Tools.option_6()
             elif choice == 7:
-                Tools.option_7()
+                Tools.privacysexy()
             elif choice == 8:
                 Tools.option_8()
             elif choice == 9:

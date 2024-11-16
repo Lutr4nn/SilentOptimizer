@@ -1,7 +1,6 @@
 from menu import terminal_menu
 import time
 
-
 def main():
     while True:
         terminal_menu()   
