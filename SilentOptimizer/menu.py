@@ -12,7 +12,7 @@ def terminal_menu():
         "Disable Telemetry",
         "Blackbird",
         "Privacy.sexy",
-        "Option 8",
+        "Disable OneDrive",
         "Option 9",
         "Option 10"
     ]
