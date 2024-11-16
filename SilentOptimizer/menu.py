@@ -7,12 +7,12 @@ def terminal_menu():
     lines = [
         "CPU Bouncer",
         "Disk Space",
-        "Clean Local Temp",
-        "Ultimate Power",
-        "Disable Telemetry",
-        "Blackbird",
-        "Privacy.sexy",
-        "Disable OneDrive",
+        "Disk Cleaner",
+        "Option 4",
+        "Option 5",
+        "Option 6",
+        "Option 7",
+        "Option 8",
         "Option 9",
         "Option 10"
     ]
