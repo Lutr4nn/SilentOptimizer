@@ -30,22 +30,22 @@ def terminal_menu():
         choice = int(input("Choose a tool number: "))
         if 1 <= choice <= 10:
             if choice == 1:
-                tool.cpu_bouncer()
+                Tools.cpu_bouncer()
             elif choice == 2:
-                tool.disk_space()
+                Tools.disk_space()
                 print('If you want to clean the disk, you can use the Disk Clenaer tool.')
             elif choice == 3:
-                tool.clean_local_temp()
+                Tools.clean_local_temp()
             elif choice == 4:
-                tool.ultimate_power()
+                Tools.ultimate_power()
             elif choice == 5:
-                tool.telemetry()
+                Tools.telemetry()
             elif choice == 6:
-                tool.blackbird()
+                Tools.blackbird()
             elif choice == 7:
-                tool.privacysexy()
+                Tools.privacysexy()
             elif choice == 8:
-                tool.disable_onedrive()
+                Tools.disable_onedrive()
             elif choice == 9:
                 Tools.option_9()
             elif choice == 10:

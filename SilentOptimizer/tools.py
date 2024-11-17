@@ -138,6 +138,3 @@ class Tools:
         else:
             print("OneDrive: unable to {action}. Exited with code: {code} - {message}".format(action=action, code=output[0], message=output[1]))
 
-
-tool = Tools()
-
