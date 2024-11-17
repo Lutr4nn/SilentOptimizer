@@ -13,7 +13,7 @@ def terminal_menu():
         "Blackbird",
         "Privacy.sexy",
         "Disable OneDrive",
-        "Option 9",
+        "Disk Cleaner",
         "Option 10"
     ]
 
@@ -33,7 +33,7 @@ def terminal_menu():
                 Tools.cpu_bouncer()
             elif choice == 2:
                 Tools.disk_space()
-                print('If you want to clean the disk, you can use the Disk Clenaer tool.')
+                print('If you want to clean the disk, you can use the Disk Cleaner tool.')
             elif choice == 3:
                 Tools.clean_local_temp()
             elif choice == 4:

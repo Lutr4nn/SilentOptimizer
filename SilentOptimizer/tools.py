@@ -1,5 +1,11 @@
-import psutil, shutil, os, subprocess, winreg, webbrowser
+import psutil, shutil, os, subprocess, winreg, webbrowser, ctypes, sys
 
+def run_as_admin():
+    if not ctypes.windll.shell32.IsUserAnAdmin():
+        params = " ".join([sys.executable] + sys.argv)
+        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, params, None, 1)
+        sys.exit()
+        
 def is_64bit():
         if os.name == 'nt':
             os_arch = os.environ["PROCESSOR_ARCHITEW6432"]
@@ -25,23 +31,99 @@ def set_registry(keys):
             print("Registry: Successfully modified {key} key.".format(key=key_name))
         except OSError:
             print("Registry: Unable to modify {key} key.".format(key=key_name))
-            
-            
+
+def empty_recycle_bin():
+    try:
+        SHEmptyRecycleBinW = ctypes.windll.shell32.SHEmptyRecycleBinW
+        flags = 0
+        result = SHEmptyRecycleBinW(None, None, flags)
+        if result == 0:
+            print("Empty the trash")
+        else:
+            print("[Error] Failed to empty the trash.")
+    except Exception as e:
+        print(f"[Error] Unable to empty the trash : {e}")
+        
+def erase_browser_login():
+    login_paths = {
+        "Chrome": os.path.expanduser("~\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Login Data"),
+        "Firefox": os.path.expanduser("~\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\"),
+        "Edge": os.path.expanduser("~\\AppData\\Local\\Microsoft\\Edge\\User Data\\Default\\Login Data"),
+        "Brave": os.path.expanduser("~\\AppData\\Local\\BraveSoftware\\Brave-Browser\\User Data\\Default\\Login Data"),
+    }
+    
+    for browser_name, path in login_paths.items():
+        try:
+            if browser_name == "Firefox":
+                if os.path.exists(path):
+                    for profile_folder in os.listdir(path):
+                        login_file = os.path.join(path, profile_folder, "logins.json")
+                        if os.path.exists(login_file):
+                            os.remove(login_file)
+                            print(f"[{browser_name}] Login data deleted for profile: {profile_folder}")
+                else:
+                    print(f"[{browser_name}] No profiles found.")
+            else:
+                if os.path.exists(path):
+                    os.remove(path)
+                    print(f"[{browser_name}] Données de connexion supprimées.")
+                else:
+                    print(f"[{browser_name}] No connection data found.")
+        except Exception as e:
+            print(f"[{browser_name}] Error deleting data: {e}")
+
+def clean_browser_cache():
+    """Nettoie les caches, cookies et historique des navigateurs courants."""
+    paths = {
+        "Chrome": {
+            "cache": os.path.expanduser("~\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cache"),
+            "cookies": os.path.expanduser("~\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cookies"),
+            "history": os.path.expanduser("~\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\History")
+        },
+        "Firefox": {
+            "cache": os.path.expanduser("~\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles"),
+            "cookies": os.path.expanduser("~\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles"),
+            "history": os.path.expanduser("~\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles")
+        },
+        "Edge": {
+            "cache": os.path.expanduser("~\\AppData\\Local\\Microsoft\\Edge\\User Data\\Default\\Cache"),
+            "cookies": os.path.expanduser("~\\AppData\\Local\\Microsoft\\Edge\\User Data\\Default\\Cookies"),
+            "history": os.path.expanduser("~\\AppData\\Local\\Microsoft\\Edge\\User Data\\Default\\History")
+        },
+        "Brave": {
+            "cache": os.path.expanduser("~\\AppData\\Local\\BraveSoftware\\Brave-Browser\\User Data\\Default\\Cache"),
+            "cookies": os.path.expanduser("~\\AppData\\Local\\BraveSoftware\\Brave-Browser\\User Data\\Default\\Cookies"),
+            "history": os.path.expanduser("~\\AppData\\Local\\BraveSoftware\\Brave-Browser\\User Data\\Default\\History")
+        }
+    }
+    for browser, data in paths.items():
+        for data_type, path in data.items():
+            if os.path.exists(path):
+                try:
+                    if data_type in ["cache", "cookies"]:
+                        shutil.rmtree(path, ignore_errors=True)
+                    elif data_type == "history" and os.path.isfile(path):
+                        os.remove(path)
+                    print(f"{browser}: {data_type} nettoyé.")
+                except Exception as e:
+                    print(f"[Erreur] Échec lors du nettoyage de {browser} ({data_type}) : {e}")
+
+
 class Tools:
     def __init__(self):
         pass
     
-    def cpu_bouncer(self): # A modifier pour qu'il tue les processus qui utilisent trop de CPU
+    def cpu_bouncer(): # A modifier pour qu'il tue les processus qui utilisent trop de CPU
         """This function kills processes that too much memory."""    
         for process in psutil.process_iter(attrs=['pid', 'name', 'memory_percent']):
             try:
                 if process.info['memory_percent'] > 0.5: # Valeur à changer mais pour test / trouver quels process il faut kill et quels process il ne faut pas kill
                     process.kill()   
             except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
-                print(f'Error: {process}')
+                print(f'[Error]: {process}')
                 pass
     
-    def disk_space(self, drive="C:"):
+    def disk_space(drive="C:"):
         '''This function checks the disk space and sends a warning if the disk space is greater than 80%.'''
         usage = psutil.disk_usage(drive)
         if usage.percent > 80:
@@ -49,8 +131,9 @@ class Tools:
         else :
             print(f'Disk space is OK. Only,{usage.percent}%, are used')
             
-    def clean_local_temp(self):
-        '''This function cleans the disk by deleting temporary files.'''   
+    def clean_local_temp():
+        '''This function cleans the disk by deleting temporary files.'''  
+        run_as_admin() 
         temp_dir = os.environ.get('TEMP', '')
         if os.path.exists(temp_dir):
             print(f"Cleaning temporary files in {temp_dir}...")
@@ -134,7 +217,15 @@ class Tools:
         cmd = "{bin} /{action}".format(bin=onedrive_setup, action=action)
         output = subprocess_handler(cmd)
         if output[0] == -2147219823:
-            print("OneDrive: successfully {action}ed".format(action=action))
+            print("[OneDrive]: successfully {action}ed".format(action=action))
         else:
-            print("OneDrive: unable to {action}. Exited with code: {code} - {message}".format(action=action, code=output[0], message=output[1]))
+            print("[OneDrive]: unable to {action}. Exited with code: {code} - {message}".format(action=action, code=output[0], message=output[1]))
+    
+    
+    def disk_cleaner():
+        run_as_admin()
+        erase_browser_login()
+        clean_browser_cache()
+        empty_recycle_bin()
+        
 
