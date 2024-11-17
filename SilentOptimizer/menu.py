@@ -35,17 +35,17 @@ def terminal_menu():
                 tool.disk_space()
                 print('If you want to clean the disk, you can use the Disk Clenaer tool.')
             elif choice == 3:
-                tool.disk_cleaner()
+                tool.clean_local_temp()
             elif choice == 4:
-                Tools.ultimate_power()
+                tool.ultimate_power()
             elif choice == 5:
-                Tools.telemetry()
+                tool.telemetry()
             elif choice == 6:
-                Tools.blackbird()
+                tool.blackbird()
             elif choice == 7:
-                Tools.privacysexy()
+                tool.privacysexy()
             elif choice == 8:
-                Tools.disable_onedrive()
+                tool.disable_onedrive()
             elif choice == 9:
                 Tools.option_9()
             elif choice == 10:
