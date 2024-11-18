@@ -46,5 +46,6 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Authors
 
-- 0xYazuko
-- Lutr4nn
+- [🎗️ - Lutr4nn](https://www.github.com/Lutr4nn)
+- [🔆 - 0xYazuko](https://www.github.com/0xYazuko)
+
