@@ -46,10 +46,6 @@ def terminal_menu():
                 Tools.privacysexy()
             elif choice == 8:
                 Tools.disable_onedrive()
-            elif choice == 9:
-                Tools.option_9()
-            elif choice == 10:
-                Tools.option_10()
             else:
                 print(f"Option {choice} is running.")
         else:
