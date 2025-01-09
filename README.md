@@ -6,7 +6,6 @@ SilentOptimizer is a performance optimization tool for PCs, designed to automati
 
 ## Features
 
-- **Automatic Process Blocking**: Automatically blocks unnecessary processes.
 - **Resource Usage Reduction**: Reduces resource usage by blocking unwanted processes.
 - **Customizable Block List**: Allows customization of the block list.
 - **Real-Time Process Monitoring**: Monitors processes in real-time.
